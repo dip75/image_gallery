@@ -10,14 +10,32 @@ class FullScreenImage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-      body: Center(
-        child: Hero(
-          tag: image['id'],
-          child: CachedNetworkImage(
-            imageUrl: image['largeImageURL'],
-            fit: BoxFit.contain,
+      body: Stack(
+        children: [
+          Center(
+            child: Hero(
+              tag: image['id'],
+              child: CachedNetworkImage(
+                imageUrl: image['largeImageURL'],
+                fit: BoxFit.contain,
+              ),
+            ),
           ),
-        ),
+          Positioned(
+            top: 40,
+            right: 20,
+            child: IconButton(
+              icon: const Icon(
+                Icons.close,
+                color: Colors.white,
+                size: 30,
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();  // Close the full-screen image view
+              },
+            ),
+          ),
+        ],
       ),
     );
   }

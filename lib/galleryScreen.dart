@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:image_gallery/fullscreenImage.dart';
 import 'package:image_gallery/provider/image_provider.dart';
-import 'package:provider/provider.dart';
-// Import your provider here
+import 'package:provider/provider.dart'; 
 import 'package:cached_network_image/cached_network_image.dart';
 
 class GalleryScreen extends StatelessWidget {
@@ -57,26 +56,59 @@ class GalleryScreen extends StatelessWidget {
                   builder: (context) => FullScreenImage(image: image),
                 ));
               },
-              child: GridTile(
-                footer: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text('Likes: ${image['likes']}'),
-                      Text('Views: ${image['views']}'),
-                    ],
+              child: Stack(
+                children: [
+                  Center(
+                    child: CachedNetworkImage(
+                      
+                      imageUrl: image['webformatURL'],
+                      fit: BoxFit.contain,
+                      placeholder: (context, url) => const Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                      errorWidget: (context, url, error) => const Icon(Icons.error),
+                    ),
                   ),
-                ),
-                child: CachedNetworkImage(
-                  imageUrl: image['webformatURL'],
-                  fit: BoxFit.cover,
-                  placeholder: (context, url) => const Center(
-                    child: CircularProgressIndicator(),
+                  Positioned(
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    child: Container(
+                      color: Colors.black.withOpacity(0.5),
+                      padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              const Icon(Icons.favorite, color: Colors.white, size: 16),
+                              const SizedBox(width: 5),
+                              Text(
+                                '${image['likes']}',
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 10,
+                                  ),
+                              ),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              const Icon(Icons.remove_red_eye, color: Colors.white, size: 16),
+                              const SizedBox(width: 5),
+                              Text(
+                                '${image['views']}',
+                                style: const TextStyle(color: Colors.white,
+                                fontSize: 10
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
-                  errorWidget: (context, url, error) =>
-                      const Icon(Icons.error),
-                ),
+                ],
               ),
             );
           },

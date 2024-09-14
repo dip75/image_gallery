@@ -13,7 +13,7 @@ class PixabayService {
           'q': query,
           'image_type': 'photo',
           'page': page,
-          'per_page': 20
+          'per_page': 100
         },
       );
       return response.data['hits'];
@@ -22,3 +22,6 @@ class PixabayService {
     }
   }
 }
+
+
+
